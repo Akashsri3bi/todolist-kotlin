@@ -11,9 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 class TodoAdapter
     (private val todos : MutableList<Todo>) : RecyclerView.Adapter<TodoAdapter.TodoViewHolder>() {
 
-    class TodoViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
-
-    }
+    class TodoViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TodoViewHolder {
         return TodoViewHolder(
@@ -34,6 +32,20 @@ class TodoAdapter
         }else{
             tvTodoTitle.paintFlags = tvTodoTitle.paintFlags and STRIKE_THRU_TEXT_FLAG.inv()
         }
+    }
+
+    fun addTodo(todo:Todo){
+        todos.add(todo)
+        //item inserted but we need to notify our recyclerView
+        notifyItemInserted(todos.size - 1)
+    }
+
+    fun deleteDoneTodos(){
+        todos.removeAll {
+            todo-> todo.isChecked
+        }
+
+        notifyDataSetChanged() ;
     }
 
     override fun onBindViewHolder(holder: TodoViewHolder, position: Int) {
